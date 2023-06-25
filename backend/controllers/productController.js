@@ -25,7 +25,6 @@ const getUniqueCategories = asyncHandler(async (req, res) => {
     res.status(200).json(categories);
   });
 
-
 const getCategoryProducts = asyncHandler(async (req, res) => {
     const category = req.params.myCategory;
     const products = await Product.find({ petCategory: category});
@@ -165,6 +164,23 @@ const getProductsBySearch = asyncHandler(async (req, res) => {
     }
     });
 
+const getSubCategoryProducts = asyncHandler(async (req, res) => {
+    const category = req.params.category;
+    const products = await Product.find({ itemCategory: category });
+    if (products.length === 0) {
+      res.status(404);
+      throw new Error('No products found');
+    } else {
+      res.status(200).json(products);
+    }
+  });
+
+const getUniqueSubCategories = asyncHandler(async (req, res) => {
+    const categories = await Product.distinct('itemCategory');
+    res.status(200).json(categories);
+  });
+
+
 export {
     getProduct,
     getProductById,
@@ -174,5 +190,7 @@ export {
     getUniqueCategories,
     getCategoryProducts,
     getProductsByFilter,
-    getProductsBySearch
+    getProductsBySearch,
+    getSubCategoryProducts,
+    getUniqueSubCategories
 };

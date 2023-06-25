@@ -13,7 +13,6 @@ import { LinkContainer } from 'react-router-bootstrap';
 import Rating from '@mui/material/Rating';
 import {useCreateReviewMutation, useGetReviewQuery} from '../slices/reviewApiSlice';
 import Message from '../components/Message';
-import Footer from '../components/Footer';
 import { useGetFavoriteQuery } from '../slices/userApiSlice';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import { Link } from 'react-router-dom';
@@ -180,8 +179,12 @@ function calculateTimeAgo(createdAt) {
                   )}
                   <Typography>
                       <div style={{marginTop:'10px'}}>
-                      <LinkContainer to={`/${data.category}`} style={{cursor: 'pointer', color:"blue"}}>
-                      <b>{data.category.toUpperCase()}</b>
+                      <LinkContainer to={`/${data.petCategory}`} style={{cursor: 'pointer', color:"blue"}}>
+                      <b>{data.petCategory.toUpperCase()}</b>
+                      </LinkContainer> /
+                      <LinkContainer to={`/item/${data.itemCategory}`} 
+                      style={{cursor: 'pointer', color:"#00CED1"}}>
+                        <b> {data.itemCategory.toUpperCase()}</b>
                       </LinkContainer>
                       </div>
                     </Typography>
@@ -189,46 +192,14 @@ function calculateTimeAgo(createdAt) {
                 <Grid container direction="column" spacing={2}>
                 <Grid item>
                   <Typography variant="h6">
-                      {data.name} by <span><Link to={`/artist/${data.artists}`}>{data.artists}</Link></span>
+                      {data.name}<span><Link to={`/artist/${data.artists}`}>{data.artists}</Link></span>
                   </Typography>
                 </Grid>
                   <Grid item>
                     <Typography variant="subtitle1">
-                      <h5>{data.description}</h5>
+                      <h6>{data.description}</h6>
                     </Typography>
                   </Grid>
-                <Box
-                sx={{
-                  border: '1px solid #ccc',
-                  borderRadius: '8px',
-                  padding: '10px',
-                  backgroundColor: '#c0c0c0', // Replace with your desired background color
-                }}
-              >
-                <Grid item container>
-                  {data.style && (
-                    <Grid item sx={{ marginRight: '10px' }}>
-                      <Typography variant="subtitle1" sx={{ fontSize: 'small', fontWeight: 'bold', color: 'primary.main' }}>
-                        Style: {data.style.toUpperCase()}
-                      </Typography>
-                    </Grid>
-                  )}
-                  {data.subject && (
-                    <Grid item sx={{ marginRight: '10px' }}>
-                      <Typography variant="subtitle1" sx={{ fontSize: 'small', fontWeight: 'bold', color: 'secondary.main' }}>
-                        Subject: {data.subject.toUpperCase()}
-                      </Typography>
-                    </Grid>
-                  )}
-                  {data.medium && (
-                    <Grid item>
-                      <Typography variant="subtitle1" sx={{ fontSize: 'small', fontWeight: 'bold', color: 'text.secondary' }}>
-                        Medium: {data.medium.toUpperCase()}
-                      </Typography>
-                    </Grid>
-                  )}
-                </Grid>
-                </Box>
 
                   {isFavorite && userInfo &&
                   <>
@@ -424,7 +395,6 @@ function calculateTimeAgo(createdAt) {
         </Grid>
     </Grid>
   </Box>
-  <Footer />
   </div>
   );
 };
