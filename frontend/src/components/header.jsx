@@ -332,7 +332,7 @@ const Header = () => {
               </>
             ) : (
               <>
-                <LinkContainer to="/register" classNameName="mx-2">
+                <LinkContainer to="/register" classNameName="mx-2" style={{margin: '10px'}}>
                   <Button variant="contained">Register</Button>
                 </LinkContainer>
                 <LinkContainer to="/login">
