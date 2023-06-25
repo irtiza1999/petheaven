@@ -2,7 +2,8 @@ import express from 'express';
 import {getProduct, createProduct, getProductById, 
     updateProduct, deleteProduct, getUniqueCategories, getCategoryProducts, 
     getProductsByFilter, getProductsBySearch, 
-    getSubCategoryProducts,getUniqueSubCategories
+    getSubCategoryProducts,getUniqueSubCategories, categorySubcategoryProduct,
+    uniqueCategorySubcategory
 } from '../controllers/productController.js';
 import {protect} from '../middleware/authMiddleware.js';
 
@@ -19,6 +20,9 @@ router.post('/', protect, createProduct);
 router.put('/', protect, updateProduct);
 router.delete('/', protect, deleteProduct);
 router.get('/subcategory/:category', getSubCategoryProducts);
+router.get('/item/:category', uniqueCategorySubcategory);
+router.get('/:category/:subcategory', categorySubcategoryProduct);
+
 
 
 

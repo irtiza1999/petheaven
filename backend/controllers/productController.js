@@ -4,7 +4,7 @@ import Review from '../models/reviewModel.js';
 
 
 const getProduct = asyncHandler(async (req, res) => {
-    const products = await Product.find({});
+    const products = await Product.find({}).sort({ createdAt: -1 });
     res.status(200).json(products);
 });
 
@@ -180,6 +180,46 @@ const getUniqueSubCategories = asyncHandler(async (req, res) => {
     res.status(200).json(categories);
   });
 
+const categorySubcategoryProduct = asyncHandler(async (req, res) => {
+    const category = req.params.category;
+    const subcategory = req.params.subcategory;
+    const products = await Product.find({ itemCategory: subcategory, petCategory: category });
+    if (products.length === 0) {
+        res.status(404);
+        throw new Error('No products found');
+    } else {
+        res.status(200).json(products);
+    }
+    });
+
+const uniqueCategorySubcategory = asyncHandler(async (req, res) => {
+  const category = req.params.category;
+  const products = await Product.find({ petCategory: category });
+  const categorySubcategories = {};
+
+  products.forEach(product => {
+    const subcategory = product.itemCategory;
+    if (subcategory) {
+      if (!categorySubcategories[category]) {
+        categorySubcategories[category] = new Set();
+      }
+      categorySubcategories[category].add(subcategory);
+    }
+  });
+
+  const distinctSubcategories = {};
+  for (const category in categorySubcategories) {
+    distinctSubcategories[category] = [...categorySubcategories[category]];
+  }
+
+  if (Object.keys(distinctSubcategories).length === 0) {
+    res.status(404);
+    throw new Error('No subcategories found for the given category');
+  } else {
+    res.status(200).json(distinctSubcategories);
+  }
+});
+
 
 export {
     getProduct,
@@ -192,5 +232,7 @@ export {
     getProductsByFilter,
     getProductsBySearch,
     getSubCategoryProducts,
-    getUniqueSubCategories
+    getUniqueSubCategories,
+    categorySubcategoryProduct,
+    uniqueCategorySubcategory
 };

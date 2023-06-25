@@ -64,6 +64,12 @@ export const productsApiSlice = apiSlice.injectEndpoints({
                 url: `${PRODUCT_URL}/subcategory/${cat}`,
             })
         }),
+
+        getUniqueCategorySubcategory: builder.query({
+            query: (cat) => ({
+                url: `${PRODUCT_URL}/item/${cat}`,
+            })
+        }),
     })
     
 })
@@ -72,6 +78,7 @@ export const { useGetAllProductQuery, useGetProductByIdQuery,
     useGetCategoryQuery, useGetCategoryProductsQuery, 
     useGetProductByFilterQuery, useGetProductBySearchQuery,
     useUpdateProductMutation, useCreateProductMutation,
-    useDeleteProductMutation, useGetSubCategoryProductsQuery
+    useDeleteProductMutation, useGetSubCategoryProductsQuery,
+    useGetUniqueCategorySubcategoryQuery
  } = productsApiSlice;
 export default productsApiSlice ;

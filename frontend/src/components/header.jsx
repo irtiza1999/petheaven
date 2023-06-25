@@ -17,7 +17,7 @@ import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
-import { useGetCategoryQuery } from '../slices/productsApiSlice';
+import { useGetCategoryQuery, useGetUniqueCategorySubcategoryQuery } from '../slices/productsApiSlice';
 import Loader from './Loader';
 import CartIcon from './CartIcon';
 import { deepPurple } from '@mui/material/colors';
@@ -85,7 +85,11 @@ const Header = () => {
       toast.error(err?.data?.message || err?.error);
     }
   };
+  const [anchorEl, setAnchorEl] = useState('');
   const { data: categories, isLoading, isError, error } = useGetCategoryQuery();
+  const { data: categorySubcategory, isLoading: isLoadingCategorySubcategory, 
+    isError: isErrorCategorySubcategory, 
+    error: errorCategorySubcategory } = useGetUniqueCategorySubcategoryQuery(anchorEl);
 
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
@@ -124,6 +128,7 @@ const Header = () => {
   useEffect(() => {
     setSearch('');
   }, []);
+
 
   return (
     <div style={{ marginBottom: '30px' }}>
@@ -192,9 +197,10 @@ const Header = () => {
                   <>
                     {categories.map((category) => (
                       <LinkContainer to={`/${category}`}>
-                        <MenuItem key={category} onClick={handleCloseNavMenu}>
-                          <Typography textAlign="center">{category.toUpperCase()}</Typography>
-                        </MenuItem>
+                            <MenuItem
+                            key={category}>
+                            <Typography textAlign="center">{category.toUpperCase()}</Typography>
+                          </MenuItem>
                       </LinkContainer>
                     ))}
                   </>
@@ -326,7 +332,7 @@ const Header = () => {
               </>
             ) : (
               <>
-                <LinkContainer to="/register" className="mx-2">
+                <LinkContainer to="/register" classNameName="mx-2">
                   <Button variant="contained">Register</Button>
                 </LinkContainer>
                 <LinkContainer to="/login">
