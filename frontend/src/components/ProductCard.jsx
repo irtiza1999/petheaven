@@ -20,6 +20,10 @@ import Rating from '@mui/material/Rating';
 const AnimatedCard = animated(Card);
 
 const ProductCard = ({ product }) => {
+  useEffect(() => {
+    product},
+    [product]);
+
   const { userInfo } = useSelector(state => state.auth);
   const animationProps = useSpring({
     opacity: 1,
