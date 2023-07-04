@@ -25,6 +25,7 @@ import SearchScreen from './screens/SearchScreen.jsx'
 import NotFoundScreen from './screens/NotFoundScreen.jsx'
 import MyOrderScreen from './screens/MyOrderScreen.jsx'
 import ItemCategoryScreen from './screens/ItemCategoryScreen.jsx'
+import MyFilterOrderScreen from './screens/MyFilterOrderScreen.jsx'
 
 
 const router = createBrowserRouter(
@@ -38,6 +39,7 @@ const router = createBrowserRouter(
       <Route path='/:category' element={<CategoryScreen />} />
       <Route path='/search/:keyWord' element={<SearchScreen />} />
       <Route path='/filter/:filter' element={<FilterScreen />} />
+      <Route path='' element={<PrivateRoute/>}> <Route path='/myorder/:userId/filter/:filter' element={<MyFilterOrderScreen />} /> </Route>
       <Route path='' element={<PrivateRoute/>}> <Route path='/profile' element={<ProfileScreen />} /> </Route>
       <Route path='' element={<PrivateRoute/>}> <Route path='/favorites/:id' element={<FavoritesScreen />} /> </Route>
       <Route path='' element={<PrivateRoute/>}> <Route path='/shipping' element={<ShippingScreen />} /> </Route>

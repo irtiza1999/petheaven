@@ -71,7 +71,7 @@ const FilterScreen = () => {
          <Row style={{ padding: '10px', textAlign: 'center', marginTop: '50px', marginBottom: '80px' }}>
            {products.map((product) => (
              <Col key={product._id} sm={12} md={6} lg={4} xl={3}>
-               <ProductCard product={product} />
+               <ProductCard product={product}/>
              </Col>
            ))}
          </Row>

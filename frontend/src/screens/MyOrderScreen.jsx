@@ -9,6 +9,13 @@ import { useGetMyOrdersQuery } from '../slices/ordersApiSlice.js';
 import { useSelector } from 'react-redux';
 import { useCreateOrderMutation, useCancelOrderMutation } from '../slices/ordersApiSlice.js';
 import { toast } from 'react-toastify';
+import FormControl from '@mui/material/FormControl';
+import Select from '@mui/material/Select';
+import InputLabel from '@mui/material/InputLabel';
+import MenuItem from '@mui/material/MenuItem';
+import { useNavigate } from 'react-router-dom';
+import { Row, Col } from 'react-bootstrap';
+
 
 const MyOrderScreen = () => {
   const { userInfo } = useSelector(state => state.auth);
@@ -53,10 +60,40 @@ const MyOrderScreen = () => {
       toast.error(err);
     }
   };
+  const navigate = useNavigate();
+  const handleChange = (event) => {
+    if(event.target.value != 'default'){
+    navigate(`/myorder/${userId}/filter/${event.target.value}`)}
+  };
   return (
     <Grid container spacing={2} style={{paddingTop:'40px'}}>
+      <Typography variant="h3" style={{padding:'20px'}}>My Orders</Typography>
+        <Grid item>   
+        <Row style={{ alignItems: 'center' }}>
+          <Col>
+            <FormControl style={{ minWidth: '150px' ,margin : '10px'}}>
+              <InputLabel id="demo-simple-select-label">Sort By</InputLabel>
+              <Select
+                labelId="demo-simple-select-label"
+                id="demo-simple-select"
+                label="Filter"
+                onChange={handleChange}
+                variant="outlined"
+                style={{ width: '100%' }}
+              >
+                <MenuItem value={'default'}>Default</MenuItem>
+                <MenuItem value={'paid'}>Paid</MenuItem>
+                <MenuItem value={'notPaid'}>Not Paid</MenuItem>
+                <MenuItem value={'delivered'}>Delivered</MenuItem>
+                <MenuItem value={'notDelivered'}>Not Delivered</MenuItem>
+                <MenuItem value={'cancelled'}>Cancelled</MenuItem>
+                <MenuItem value = {'notCancelled'}>Not Cancelled</MenuItem>
+              </Select>
+            </FormControl>
+          </Col>
+        </Row>
+            </Grid>
       <Grid item xs={12}>
-        <Typography variant="h3" style={{padding:'20px'}}>My Orders</Typography>
         {isLoading ? (
           <Loader />
         ) : isError ? (
