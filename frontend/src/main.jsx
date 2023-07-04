@@ -26,6 +26,14 @@ import NotFoundScreen from './screens/NotFoundScreen.jsx'
 import MyOrderScreen from './screens/MyOrderScreen.jsx'
 import ItemCategoryScreen from './screens/ItemCategoryScreen.jsx'
 import MyFilterOrderScreen from './screens/MyFilterOrderScreen.jsx'
+import AdminRoute from './components/AdminRoute.jsx'
+import AllOrderScreen from './screens/admin/AllOrderScreen.jsx'
+import AdminPanelScreen from './screens/admin/AdminPanelScreen.jsx'
+import AllUserScreen from './screens/admin/AllUserScreen.jsx'
+import AdminAllProductScreen from './screens/admin/AdminAllProductScreen.jsx'
+import AdminAddProductScreen from './screens/admin/AdminAddProductScreen.jsx'
+import AllReviewScreen from './screens/admin/AllReviewScreen.jsx'
+import FilterOrderScreen from './screens/admin/FilterOrderScreen.jsx'
 
 
 const router = createBrowserRouter(
@@ -48,6 +56,13 @@ const router = createBrowserRouter(
       <Route path='' element={<PrivateRoute/>}> <Route path='/order/:id' element={<OrderScreen />} /> </Route>
       <Route path='' element={<PrivateRoute/>}> <Route path='/myorder/:userId' element={<MyOrderScreen />} /> </Route>
       <Route path='item/:item' element={<ItemCategoryScreen />} />
+            <Route path='' element={<AdminRoute/>}> <Route path='/admin' element={<AdminPanelScreen />} /> </Route>
+      <Route path='' element={<AdminRoute/>}> <Route path='/admin/orders' element={<AllOrderScreen />} /> </Route>
+      <Route path='' element={<AdminRoute/>}> <Route path='/admin/userslist' element={<AllUserScreen />} /> </Route>
+      <Route path='' element={<AdminRoute/>}> <Route path='/admin/productslist' element={<AdminAllProductScreen />} /> </Route>
+      <Route path='' element={<AdminRoute/>}> <Route path='/admin/addproduct' element={<AdminAddProductScreen />} /> </Route>
+      <Route path='' element={<AdminRoute/>}> <Route path='/admin/reviewslist' element={<AllReviewScreen />} /> </Route>
+      <Route path='' element={<AdminRoute/>}> <Route path='/admin/orders/filter/:filter' element={<FilterOrderScreen />} /> </Route>
       <Route path='*' element={<NotFoundScreen />} />
     </Route>
   ))

@@ -17,6 +17,7 @@ import {
 
 
 const OrderScreen = () => {
+   const imageBaseUrl = 'http://localhost:5000/uploads/';
   const { id: orderId } = useParams();
 
   const {
@@ -133,7 +134,7 @@ const OrderScreen = () => {
                 <a href={`mailto:${order.user.email}`}>{order.user.email}</a>
               </p>
               <p>
-                <strong>Address:</strong>
+                <strong>Address: </strong>
                 {order.shippingAddress.address}, {order.shippingAddress.city}{' '}
                 {order.shippingAddress.postalCode},{' '}
                 {order.shippingAddress.country}
@@ -171,7 +172,7 @@ const OrderScreen = () => {
                       <Row>
                         <Col md={1}>
                           <Image
-                            src={item.image}
+                            src={imageBaseUrl+item.image}
                             alt={item.name}
                             fluid
                             rounded
@@ -254,6 +255,7 @@ const OrderScreen = () => {
                   </ListGroup.Item>
                 )}
               {userInfo &&
+                order.userInfo && order.userInfo &&
                 !order.isPaid &&
                 !order.isCancelled &&(
                   <ListGroup.Item>

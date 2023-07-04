@@ -10,6 +10,7 @@ import { useCreateOrderMutation } from '../slices/ordersApiSlice';
 import { clearCart } from '../slices/cartSlice';
 
 const PlaceOrderScreen = () => {
+   const imageBaseUrl = 'http://localhost:5000/uploads/';
   const navigate = useNavigate();
 
   const cart = useSelector((state) => state.cart);
@@ -77,7 +78,7 @@ const PlaceOrderScreen = () => {
                       <Row>
                         <Col md={1}>
                           <Image
-                            src={item.image}
+                            src={imageBaseUrl+item.image}
                             alt={item.name}
                             fluid
                             rounded

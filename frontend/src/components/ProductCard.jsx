@@ -20,6 +20,7 @@ import Rating from '@mui/material/Rating';
 const AnimatedCard = animated(Card);
 
 const ProductCard = ({ product }) => {
+   const imageBaseUrl = 'http://localhost:5000/uploads/';
   useEffect(() => {
     product},
     [product]);
@@ -93,7 +94,7 @@ const ProductCard = ({ product }) => {
               <div>
               <CardMedia
                 component="img"
-                image={product.image}
+                image={imageBaseUrl+product.image}
                 alt={product.name}
                 style={{width:'100%',height: '15vw',
                 objectFit: 'cover'}}

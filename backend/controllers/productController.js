@@ -39,21 +39,23 @@ const getCategoryProducts = asyncHandler(async (req, res) => {
 const createProduct = asyncHandler(async (req, res) => {
     const {name,description,petCategory,itemCategory
         ,price,countInStock,image} = req.body;
-    const count = parseInt(countInStock[0], 10);
     const product = await Product.findOne({ name:name });
     if(product){
         res.status(400);
         throw new Error('Product already exists');
     }
     else{
+        const imageName = (req.file) ? req.file.filename : null;
+        const category = petCategory.toUpperCase();
+        const subCat = itemCategory.toUpperCase();
         const newProduct = await Product.create({
             name,
             description,
-            petCategory,
-            itemCategory,
+            petCategory : category,
+            itemCategory : subCat,
             price,
             countInStock,
-            image
+            image: imageName,
         });
         if(newProduct){
             res.status(201).json({
@@ -69,23 +71,21 @@ const createProduct = asyncHandler(async (req, res) => {
             res.status(400);
             throw new Error('Invalid product data');
         }
-    
     }
-        
 });
-
 
 const updateProduct = asyncHandler(async (req, res) => {
     const productId = req.body.productId;
     const product = await Product.findById(productId);
     if(product){
+        const imageName = (req.file) ? req.file.filename : null;
         product.name = req.body.name || product.name;
         product.description = req.body.description || product.description;
         product.petCategory = req.body.petCategory || product.petCategory;
         product.itemCategory = req.body.itemCategory || product.itemCategory;
         product.price = req.body.price || product.price;
         product.countInStock = req.body.countInStock || product.countInStock;
-        product.image = req.body.image || product.image;
+        product.image = imageName || product.image;
         
         const updatedProduct = await product.save();
         res.status(200).json({
