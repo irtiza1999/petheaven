@@ -49,7 +49,7 @@ const Footer = () => {
         <hr />
       <div className="row text-center">
         <span style={{ color: '#fff' }}>
-          Copyright © Pet Haven
+          Copyright © Pet Heaven
           {' '}
           {new Date().getFullYear()}
         </span>
