@@ -66,8 +66,8 @@ const MyOrderScreen = () => {
     navigate(`/myorder/${userId}/filter/${event.target.value}`)}
   };
   return (
-    <Grid container spacing={2} style={{paddingTop:'40px'}}>
-      <Typography variant="h3" style={{padding:'20px'}}>My Orders</Typography>
+    <Grid container spacing={2} style={{paddingTop:'100px'}}>
+      <Typography variant="h4" style={{padding:'20px'}}>My Orders</Typography>
         <Grid item>   
         <Row style={{ alignItems: 'center' }}>
           <Col>
