@@ -11,6 +11,7 @@ import { updateCart } from '../components/cartUtil';
 
 
 const CartScreen = () => {
+  const imageBaseUrl = 'http://localhost:5000/uploads/';
   const [qty, setQty] = useState(1);
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -83,7 +84,7 @@ const CartScreen = () => {
             }}>
               <Row>
                 <Col md={2}>
-                  <Image src={item.image} alt={item.name} fluid rounded />
+                  <Image src={imageBaseUrl+item.image} alt={item.name} fluid rounded style={{height:''}} />
                 </Col>
                 <Col md={2}>
                   <h6 style={{textDecoration: 'none'}}><Link to={`/product/${item._id}`}>{item.name}</Link></h6>
