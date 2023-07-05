@@ -35,6 +35,7 @@ import AdminAddProductScreen from './screens/admin/AdminAddProductScreen.jsx'
 import AllReviewScreen from './screens/admin/AllReviewScreen.jsx'
 import FilterOrderScreen from './screens/admin/FilterOrderScreen.jsx'
 import AccommodationScreen from './screens/AccommodationScreen.jsx'
+import RoomScreen from './screens/RoomScreen.jsx'
 
 
 const router = createBrowserRouter(
@@ -48,6 +49,8 @@ const router = createBrowserRouter(
       <Route path='/:category' element={<CategoryScreen />} />
       <Route path='/search/:keyWord' element={<SearchScreen />} />
       <Route path='/filter/:filter' element={<FilterScreen />} />
+      <Route path='' element={<PrivateRoute/>}> <Route path='/services/accommodation' element={<AccommodationScreen />} /> </Route>
+      <Route path='' element={<PrivateRoute/>}> <Route path='/services/accommodation/:id' element={<RoomScreen />} /> </Route>
       <Route path='' element={<PrivateRoute/>}> <Route path='/myorder/:userId/filter/:filter' element={<MyFilterOrderScreen />} /> </Route>
       <Route path='' element={<PrivateRoute/>}> <Route path='/profile' element={<ProfileScreen />} /> </Route>
       <Route path='' element={<PrivateRoute/>}> <Route path='/favorites/:id' element={<FavoritesScreen />} /> </Route>
@@ -56,7 +59,7 @@ const router = createBrowserRouter(
       <Route path='' element={<PrivateRoute/>}> <Route path='/placeorder' element={<PlaceOrderScreen />} /> </Route>
       <Route path='' element={<PrivateRoute/>}> <Route path='/order/:id' element={<OrderScreen />} /> </Route>
       <Route path='' element={<PrivateRoute/>}> <Route path='/myorder/:userId' element={<MyOrderScreen />} /> </Route>
-      <Route path='' element={<PrivateRoute/>}> <Route path='/services/accommodation' element={<AccommodationScreen />} /> </Route>
+      
       <Route path='item/:item' element={<ItemCategoryScreen />} />
       <Route path='' element={<AdminRoute/>}> <Route path='/admin' element={<AdminPanelScreen />} /> </Route>
       <Route path='' element={<AdminRoute/>}> <Route path='/admin/orders' element={<AllOrderScreen />} /> </Route>

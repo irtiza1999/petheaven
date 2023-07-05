@@ -85,9 +85,19 @@ const ProductCard = ({ product }) => {
     }
   }, [favProducts, userInfo]);
 
+  const [isHovered, setHovered] = useState(false);
+    const springProps = useSpring({
+    scale: isHovered ? 1.1 : 1,
+    border: isHovered ? '2px solid #fff' : 'none',
+    background: isHovered ? ' #fff' : '#C3C1BC',
+  });
+
   return (
     <div style={{ padding: '10px' }}>
-      <AnimatedCard style={{ ...animationProps, ...hoverProps, borderRadius: '10px' }}>
+      <AnimatedCard style={{ ...animationProps, ...hoverProps, ...springProps,borderRadius: '10px' }}
+      onMouseEnter={() => setHovered(true)}
+      onMouseLeave={() => setHovered(false)}
+      >
         <Card>
           <LinkContainer to={`/product/${product._id}`}>
             <CardActionArea>
