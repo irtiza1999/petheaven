@@ -27,7 +27,7 @@ const [showCheckInCalendar, setShowCheckInCalendar] = useState(false);
   const [showCheckOutCalendar, setShowCheckOutCalendar] = useState(false);
   const [selectedCheckInDate, setSelectedCheckInDate] = useState(new Date());
   const [selectedCheckOutDate, setSelectedCheckOutDate] = useState(new Date());
-  const [totalPrice, setTotalPrice] = useState(0);
+  const [totalPrice, setTotalPrice] = useState(100);
   const { id } = useParams();
   const {userInfo} = useSelector(state => state.auth);
   const { data, isLoading, refetch: refetchProduct, error } = useGetRoomByIdQuery(id);
@@ -46,14 +46,30 @@ const [showCheckInCalendar, setShowCheckInCalendar] = useState(false);
     setShowCheckOutCalendar(true);
   };
 
+useEffect(() => {
+  if (data) {
+    const daysGone = calculateDaysGone(selectedCheckInDate, selectedCheckOutDate);
+    const newTotalPrice = data.price * daysGone;
+    setTotalPrice(newTotalPrice);
+  }
+}, [selectedCheckInDate, selectedCheckOutDate, data]);
+
+const calculateDaysGone = (checkInDate, checkOutDate) => {
+  const checkInTimestamp = checkInDate.getTime();
+  const checkOutTimestamp = checkOutDate.getTime();
+
+  const differenceMs = checkOutTimestamp - checkInTimestamp;
+
+  const daysGone = 1+Math.ceil(differenceMs / (1000 * 60 * 60 * 24));
+
+  return daysGone;
+};
   const handleCheckInDateChange = (date) => {
     setSelectedCheckInDate(date);
-    setTotalPrice(data.price * (selectedCheckOutDate - selectedCheckInDate))
+   
     setShowCheckInCalendar(false);
     if(selectedCheckInDate > selectedCheckOutDate){
       setSelectedCheckOutDate(date);
-      setTotalPrice(data.price * (selectedCheckOutDate.getTime() - selectedCheckInDate.getTime()))
-
     }
   };
 
@@ -61,12 +77,9 @@ const [showCheckInCalendar, setShowCheckInCalendar] = useState(false);
     if(date < selectedCheckInDate){
         toast.error("Check-out date cannot be before check-in date");
         setSelectedCheckOutDate(selectedCheckInDate);
-        setTotalPrice(data.price * (selectedCheckOutDate.getTime() - selectedCheckInDate.getTime()))
-
         return;
     }
-    setSelectedCheckOutDate(date);
-    setTotalPrice(data.price * (selectedCheckOutDate.getTime() - selectedCheckInDate.getTime()))
+        setSelectedCheckOutDate(date);
 
     setShowCheckOutCalendar(false);
   };
@@ -97,16 +110,18 @@ function createOrder(data, actions, totalPrice) {
     .create({
       purchase_units: [
         {
-          amount: { value: totalPrice },
+          amount: { value: totalPrice, currency_code: 'USD' },
         },
       ],
     })
-    .then((order) => {
-      return order.id;
+    .then((orderID) => {
+      return orderID;
+    })
+    .catch((error) => {
+      console.error('Error creating order:', error);
+      throw new Error('Failed to create order');
     });
 }
-
-
   const [createBooking , { isLoading: loadingCreateBooking }] = useCreateBookingMutation();
   function onApprove(data, actions) {
     return actions.order.capture().then(async function (details) {
@@ -124,7 +139,7 @@ function createOrder(data, actions, totalPrice) {
       }
     });
   }
-
+ {console.log(totalPrice);}
   return (
     <div>
     <Box paddingTop="100px">
@@ -147,7 +162,7 @@ function createOrder(data, actions, totalPrice) {
               />
             </Grid>
             <Grid item xs={12} sm={9}>
-              <Paper style={{ height: '100%', padding: '20px' }}>
+              <Paper style={{ height: '100%', padding: '20px', marginLeft : '40px' }}>
                 <Grid item style={{ paddingBottom: '10px' }}>
             <h4 style={{textAlign :'center'}}>Book Now</h4>
               <nav style={{ backgroundColor: "#eeeeee", paddingTop: "40px",
@@ -201,28 +216,39 @@ function createOrder(data, actions, totalPrice) {
       <Grid container style={{ justifyContent: 'center', marginTop: '10px' }} spacing={2}>
         <Grid item xs={6} sm={6} md={6} lg={6}>
             <div>
-            <Typography variant="body1">Price: <b>$
-                {(data.price * (selectedCheckOutDate - selectedCheckInDate))}
-                </b></Typography>
+            <Typography variant="body1">Price: 
+            <b>$
+                {totalPrice}
+            </b>
+                </Typography>
             </div>
         </Grid>
         </Grid>
         <Grid container style={{ justifyContent: 'center', marginTop: '10px' }} spacing={2}>
         <Grid item xs={6} sm={6} md={6} lg={6}>
             <div>
-            <PayPalScriptProvider options={{ 'client-id': paypal.clientId, currency: 'USD' }}>
-            <PayPalButtons
-                variant="contained"
-                color="success"
-                size="large"
-                style={{ layout: 'horizontal', color: 'gold', shape: 'pill', label: 'paypal', tagline: false }}
-                createOrder={createOrder}
-                onApprove={onApprove}
-                onError={onError}
-                >
-                Book
-                </PayPalButtons>
-                </PayPalScriptProvider>       
+               {loadingPayPal ? (
+  <Loader />
+) : errorPayPal ? (
+  <Message variant="error">
+    Error loading PayPal: {errorPayPal.message}
+  </Message>
+) : (
+  <PayPalScriptProvider options={{ 'client-id': paypal.clientId, currency: 'USD' }}>
+    <PayPalButtons
+      variant="contained"
+      color="success"
+      size="large"
+      style={{ layout: 'horizontal', color: 'gold', shape: 'pill', label: 'paypal', tagline: false }}
+      createOrder={(data, actions) => createOrder(data, actions, totalPrice)}
+      onApprove={onApprove}
+      onError={onError}
+    >
+      Book
+    </PayPalButtons>
+  </PayPalScriptProvider>
+)}
+
             </div>
         </Grid>
         </Grid>
