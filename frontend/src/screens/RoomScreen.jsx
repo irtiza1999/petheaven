@@ -31,6 +31,7 @@ const [showCheckInCalendar, setShowCheckInCalendar] = useState(false);
   const { id } = useParams();
   const {userInfo} = useSelector(state => state.auth);
   const { data, isLoading, refetch: refetchProduct, error } = useGetRoomByIdQuery(id);
+  const [available, setAvailable] = useState(false);
   
   const fadeInProps = useSpring({
     opacity: 1,
@@ -65,8 +66,13 @@ const calculateDaysGone = (checkInDate, checkOutDate) => {
   return daysGone;
 };
   const handleCheckInDateChange = (date) => {
+    setAvailable(false);
+    if(date < new Date()){
+        toast.error("Check-in date cannot be before today's date");
+        setSelectedCheckInDate(new Date());
+        return;
+    }
     setSelectedCheckInDate(date);
-   
     setShowCheckInCalendar(false);
     if(selectedCheckInDate > selectedCheckOutDate){
       setSelectedCheckOutDate(date);
@@ -74,6 +80,7 @@ const calculateDaysGone = (checkInDate, checkOutDate) => {
   };
 
   const handleCheckOutDateChange = (date) => {
+    setAvailable(false);
     if(date < selectedCheckInDate){
         toast.error("Check-out date cannot be before check-in date");
         setSelectedCheckOutDate(selectedCheckInDate);
@@ -95,51 +102,65 @@ const calculateDaysGone = (checkInDate, checkOutDate) => {
       setShowCheckInCalendar(false);
     }, 5000);
   };
-  const {
-    data: paypal,
-    isLoading: loadingPayPal,
-    error: errorPayPal,
-  } = useGetPaypalClientIdQuery();
 
-    function onError(err) {
-    toast.error(err.message);
-  }
 
-function createOrder(data, actions, totalPrice) {
-  return actions.order
-    .create({
-      purchase_units: [
-        {
-          amount: { value: totalPrice, currency_code: 'USD' },
-        },
-      ],
-    })
-    .then((orderID) => {
-      return orderID;
-    })
-    .catch((error) => {
-      console.error('Error creating order:', error);
-      throw new Error('Failed to create order');
-    });
-}
-  const [createBooking , { isLoading: loadingCreateBooking }] = useCreateBookingMutation();
-  function onApprove(data, actions) {
-    return actions.order.capture().then(async function (details) {
-      try {
-        await createBooking(
-            {   id, 
-                checkInDate: selectedCheckInDate, 
-                checkOutDate: selectedCheckOutDate, 
-                userId: userInfo._id,
-                totalPrice
-             });
-        toast.success('Order is paid');
-      } catch (err) {
-        toast.error(err?.data?.message || err.error);
+const availableCheck = () => {
+  if (selectedCheckInDate && selectedCheckOutDate) {
+    const daysGone = calculateDaysGone(selectedCheckInDate, selectedCheckOutDate);
+    const newTotalPrice = data.price * daysGone;
+    setTotalPrice(newTotalPrice);
+
+    let overlappingBooking = false;
+    for (const booking of data.booking) {
+
+      const bookingCheckInDate = new Date(booking.checkInDate);
+      const bookingCheckOutDate = new Date(booking.checkOutDate);
+      console.log(bookingCheckInDate, bookingCheckOutDate);
+      if (
+        (selectedCheckInDate >= bookingCheckInDate && selectedCheckInDate < bookingCheckOutDate) ||
+        (selectedCheckOutDate > bookingCheckInDate && selectedCheckOutDate <= bookingCheckOutDate) ||
+        (selectedCheckInDate < bookingCheckInDate && selectedCheckOutDate > bookingCheckOutDate)
+      ) {
+        overlappingBooking = true;
+        break; // Stop checking further bookings, as there's already an overlap
       }
-    });
+    }
+
+    if (overlappingBooking) {
+      toast.error('Room is already booked for these dates');
+      setAvailable(false);
+    } else {
+      toast.success('Room is available for these dates. Book now!!');
+      // setAvailable(true);
+    }
+  } else {
+    toast.error('Please select check-in and check-out dates');
   }
- {console.log(totalPrice);}
+};
+
+
+
+  const [createBooking, { createIsLoading, createError }] = useCreateBookingMutation();
+  const handleCheckout = async () => {
+    try {
+      const res = await createBooking({
+        id,
+        checkInDate: selectedCheckInDate,
+        checkOutDate: selectedCheckOutDate,
+        userId: userInfo._id,
+        totalPrice,
+      }).unwrap();
+      if(res){
+      toast.success('Booking Added Successfully!!');
+      refetchProduct();
+      }else{
+        toast.error(res.message);
+      }
+    } catch (err) {
+      toast.error(err);
+    }
+  };
+
   return (
     <div>
     <Box paddingTop="100px">
@@ -213,7 +234,8 @@ function createOrder(data, actions, totalPrice) {
           </div>
         </Grid>
       </Grid>
-      <Grid container style={{ justifyContent: 'center', marginTop: '10px' }} spacing={2}>
+      <Grid container style={{ justifyContent: 'center', marginTop: '20px' }} spacing={2}>
+        <Row>
         <Grid item xs={6} sm={6} md={6} lg={6}>
             <div>
             <Typography variant="body1">Price: 
@@ -223,10 +245,40 @@ function createOrder(data, actions, totalPrice) {
                 </Typography>
             </div>
         </Grid>
+        <Grid item xs={6} sm={6} md={6} lg={6}>
+            <div>
+              {!available ? (
+                <>
+                <Button
+                onClick={() => {
+                availableCheck()
+              }}
+              variant="contained" color="success" size="small" 
+              style={{ width: '100%' }}
+              >
+                Check Availability
+              </Button>
+                </>
+              ) : (
+                <>
+                  <Button
+              onClick={() => {
+                handleCheckout()
+              }}
+              variant="contained" color="success" size="small" style={{ width: '100%' }}>
+                Book Now
+              </Button>
+                </>
+              )
+                }
+              
+            </div>
+        </Grid>
+        </Row>
         </Grid>
         <Grid container style={{ justifyContent: 'center', marginTop: '10px' }} spacing={2}>
         <Grid item xs={6} sm={6} md={6} lg={6}>
-            <div>
+  {/* <div>
                {loadingPayPal ? (
   <Loader />
 ) : errorPayPal ? (
@@ -248,8 +300,7 @@ function createOrder(data, actions, totalPrice) {
     </PayPalButtons>
   </PayPalScriptProvider>
 )}
-
-            </div>
+      </div> */}
         </Grid>
         </Grid>
     </nav>

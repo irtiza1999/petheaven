@@ -27,6 +27,11 @@ const [showCheckInCalendar, setShowCheckInCalendar] = useState(false);
   };
 
   const handleCheckInDateChange = (date) => {
+    if(date < new Date()){
+        toast.error("Check-in date cannot be before today's date");
+        setSelectedCheckInDate(new Date());
+        return;
+    }
     setSelectedCheckInDate(date);
     setShowCheckInCalendar(false);
     if(selectedCheckInDate > selectedCheckOutDate){
@@ -128,7 +133,7 @@ style={{
       </Grid>
     </nav>
     <div style={{ paddingTop: "40px", textAlign: "center" }}>
-        <h3>Available Accommodations</h3>
+        <h3>All Available Accommodations</h3>
         <Grid container spacing={3} justifyContent="flex-start"
         style={{ padding: '10px', textAlign: 'center', marginBottom: '80px' }}>
         {rooms && rooms.length === 0 && (

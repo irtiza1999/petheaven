@@ -92,11 +92,13 @@ const RoomCard = ({ product }) => {
               </CardContent>
             </CardActionArea>
           </LinkContainer>
+          <LinkContainer to={`/services/accommodation/${product._id}`}>
           <CardActions style={{ justifyContent: 'center' }}>
                 <Button size="small" color="success" onClick={handleRoomBooking(product._id)}>
-                    Book Now
+                    View Details
                 </Button>
             </CardActions>
+            </LinkContainer>
         </Card>
       </AnimatedCard>
     </div>

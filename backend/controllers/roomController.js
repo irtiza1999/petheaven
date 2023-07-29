@@ -28,15 +28,8 @@ const createRoom = asyncHandler(async (req, res) => {
     }
 });
 
-const getAllAvailableRooms = asyncHandler(async (req, res) => {
-    const today = new Date();
-    const rooms = await Room.find({
-        $or: [
-            { "booking.isBooked": false },
-            { "booking.checkInDate": { $lte: today } },
-            { "booking.checkOutDate": { $gte: today } },
-            ],
-            });
+const getAllRooms = asyncHandler(async (req, res) => {
+    const rooms = await Room.find({});
     if(rooms.length > 0) {
     res.json(rooms);
     } else {
@@ -57,42 +50,66 @@ const getRoomById = asyncHandler(async (req, res) => {
 
 const createBooking = asyncHandler(async (req, res) => {
   const { id, checkInDate, checkOutDate, userId, totalPrice } = req.body;
-  const room = await Room.findById(id);
+  try {
+    const room = await Room.findById(id);
+    const findUser = await User.findById(userId);
+    if (room && findUser) {
+      let overlappingBooking = false;
+      for (const booking of room.booking) {
+        const bookingCheckInDate = new Date(booking.checkInDate);
+        const bookingCheckOutDate = new Date(booking.checkOutDate);
+        if (
+          checkInDate < bookingCheckOutDate ||
+          checkOutDate > bookingCheckInDate
+        ) {
+          overlappingBooking = true;
+          break; // Stop checking further bookings, as there's already an overlap
+        }
+      }
 
-  if (room) {
-    const overlappingBooking = room.booking.find(
-      (booking) =>
-        booking.isBooked &&
-        checkInDate < booking.checkOutDate &&
-        checkOutDate > booking.checkInDate
-    );
+      if (overlappingBooking) {
+        res.status(400);
+        throw new Error('Room is already booked for these dates');
+      } else {
+        const newBooking = {
+          isBooked: true,
+          checkInDate,
+          checkOutDate,
+          user: findUser._id,
+          totalPrice,
+        };
 
-    if (overlappingBooking) {
-      res.status(400);
-      throw new Error('Room is already booked for these dates');
+        room.booking.push(newBooking);
+
+        const updatedRoom = await room.save();
+
+        // Send a response with the updated room details
+        res.json(updatedRoom);
+      }
     } else {
-      room.booking.push({
-        isBooked: true,
-        checkInDate,
-        checkOutDate,
-        user: userId,
-        totalPrice,
-        isPaid: true,
-      });
-
-      const updatedRoom = await room.save();
-      res.json(updatedRoom);
+      res.status(404);
+      throw new Error('Room or User not found');
     }
-  } else {
-    res.status(404);
-    throw new Error('Room not found');
+  } catch (error) {
+    console.error('Error in creating booking:', error);
+    res.status(500);
+    throw new Error('Error in saving room: ' + error.message);
   }
 });
 
 
+
+
+
+
+// const roomAvailabilityById = asyncHandler(async (req, res) => {
+//     const room = await Room.findById(req.params.id);
+    
+// });
+
   export {
     createRoom,
-    getAllAvailableRooms,
+    getAllRooms,
     getRoomById,
     createBooking,
 

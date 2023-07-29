@@ -18,7 +18,7 @@ export const roomApiSlice = apiSlice.injectEndpoints({
 
         createBooking: builder.mutation({
             query: (body) => ({
-                url: `${ROOM_URL}/book`,
+                url: `${ROOM_URL}/book/room`,
                 method: 'PUT',
                 body,
             }),
@@ -32,5 +32,4 @@ export const {
     useGetAllAvailableRoomsQuery,
     useGetRoomByIdQuery,
     useCreateBookingMutation,
-
  } = roomApiSlice;
