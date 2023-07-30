@@ -318,6 +318,12 @@ const Header = () => {
                       </MenuItem>
                     </LinkContainer>
 
+                    <LinkContainer to = {`/myBookings/${userInfo._id}`}>
+                      <MenuItem key='fav'>
+                        <Typography textAlign="center">My Bookings</Typography>
+                      </MenuItem>
+                    </LinkContainer>
+
                     <LinkContainer to="/profile">
                       <MenuItem key={userInfo.name}>
                         <Typography textAlign="center">Update Profile</Typography>
