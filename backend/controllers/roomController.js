@@ -108,11 +108,41 @@ const getMyBookings = asyncHandler(async (req, res) => {
   }
 });
 
+const getAllRoomsByDate = asyncHandler(async (req, res) => {
+  const { in: checkInDate, out: checkOutDate } = req.params;
+  const rooms = await Room.find({});
+  if (rooms.length > 0) {
+    const availableRooms = [];
+    for (const room of rooms) {
+      let overlappingBooking = false;
+      for (const booking of room.booking) {
+        const bookingCheckInDate = new Date(booking.checkInDate);
+        const bookingCheckOutDate = new Date(booking.checkOutDate);
+        if (
+          checkInDate < bookingCheckOutDate ||
+          checkOutDate > bookingCheckInDate
+        ) {
+          overlappingBooking = true;
+          break; // Stop checking further bookings, as there's already an overlap
+        }
+      }
+
+      if (!overlappingBooking) {
+        availableRooms.push(room);
+      }
+    }
+    res.json(availableRooms);
+  } else {
+    res.status(404);
+    throw new Error('No rooms found');
+  }
+});
 
   export {
     createRoom,
     getAllRooms,
     getRoomById,
     createBooking,
-    getMyBookings
+    getMyBookings,
+    getAllRoomsByDate
   };

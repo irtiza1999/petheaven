@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import Calendar from "react-calendar";
 import "react-calendar/dist/Calendar.css";
 import Button from "@material-ui/core/Button";
@@ -61,10 +61,10 @@ const [showCheckInCalendar, setShowCheckInCalendar] = useState(false);
     }, 10000);
   };
 
+  const navigate = useNavigate();
   const handleSearch = () => {
-    
+    navigate(`/accommodation/${selectedCheckInDate.toISOString().substring(0, 10)}/${selectedCheckOutDate.toISOString().substring(0, 10)}`);
     };
-
   return (
     <>
      <div
@@ -126,7 +126,9 @@ style={{
           </div>
         </Grid>
         <Grid item xs={12} sm={6} md={4} lg={3}>
-          <Button variant="contained" color="primary" onClick={handleSearch}>
+          <Button variant="contained" color="primary" 
+          onClick={handleSearch}
+          >
             Search
           </Button>
         </Grid>
