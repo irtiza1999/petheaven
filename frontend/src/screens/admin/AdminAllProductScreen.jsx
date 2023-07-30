@@ -90,11 +90,6 @@ const AdminAllProductScreen = () => {
     refetch();
   }, []);
   
-  const handleVerify = (product) => {
-    const res = updateProduct({productId: product._id, isVerified: true});
-    toast.success('Product verified successfully');
-    refetch();
-  }
 
   return (
     <Grid container spacing={0}>

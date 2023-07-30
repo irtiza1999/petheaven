@@ -54,7 +54,9 @@ const MyBookingScreen = () => {
                     <TableCell>
                         {order.isPaid ? (
                             <Typography variant="body2" style={{ color: 'green' }}>
-                                Paid
+                                <Button variant="outline-success" className="btn-sm" disabled>
+                            <i className="fas fa-check">Paid</i>
+                          </Button>
                             </Typography>
                         ) : (
                             <Typography variant="body2" style={{ color: 'red' }}>

@@ -138,11 +138,43 @@ const getAllRoomsByDate = asyncHandler(async (req, res) => {
   }
 });
 
+const getAllBookings = asyncHandler(async (req, res) => {
+  const bookings = await Room.find({ 'booking.isBooked': true });
+  if (bookings) {
+    res.json(bookings);
+  } else {
+    res.status(404);
+    throw new Error('No bookings found');
+  }
+});
+
+const markAsPaid = asyncHandler(async (req, res) => {
+  const { orderId } = req.body;
+  console.log(orderId);
+  const bookings = await Room.find({ 'booking._id': orderId });
+  if (bookings) {
+    bookings[0].booking.forEach((booking) => {
+      if (booking._id.toString() === orderId) {
+        booking.isPaid = true;
+        booking.paidAt = Date.now();
+      }
+    });
+    const updatedRoom = await bookings[0].save();
+    res.json(updatedRoom);
+  } else {
+    res.status(404);
+    throw new Error('No bookings found');
+  }
+});
+
+
   export {
     createRoom,
     getAllRooms,
     getRoomById,
     createBooking,
     getMyBookings,
-    getAllRoomsByDate
+    getAllRoomsByDate,
+    getAllBookings,    
+    markAsPaid,
   };

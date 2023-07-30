@@ -15,6 +15,7 @@ import InventoryIcon from '@mui/icons-material/Inventory';
 import ReviewsIcon from '@mui/icons-material/Reviews';
 import HomeIcon from '@mui/icons-material/Home';
 import MonetizationOnIcon from '@mui/icons-material/MonetizationOn';
+import HotelIcon from '@mui/icons-material/Hotel';
 
 const drawerWidth = 240;
 
@@ -93,6 +94,16 @@ export default function ClippedDrawer() {
                         <ReviewsIcon />
                     </ListItemIcon>
                         <ListItemText primary={'Manage Reviews'} />
+                    </ListItemButton>
+                </ListItem>
+            </LinkContainer>
+             <LinkContainer to='/admin/bookings'>
+                <ListItem disablePadding>
+                    <ListItemButton>
+                    <ListItemIcon>
+                        <HotelIcon />
+                    </ListItemIcon>
+                        <ListItemText primary={'Manage Bookings'} />
                     </ListItemButton>
                 </ListItem>
             </LinkContainer>
