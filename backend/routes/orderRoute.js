@@ -1,6 +1,8 @@
 import express from 'express';
 import {addOrderItems, getOrderById, updateOrderToPaid, updateOrderToDelivered, 
-    getAllOrders, myOrders, updateOrderToCancel,filterOrder, myFilterOrders} from '../controllers/orderController.js';
+    getAllOrders, myOrders, updateOrderToCancel,filterOrder, myFilterOrders,
+getSales, getTopProducts, getProductCategoriesSortedByOrders
+} from '../controllers/orderController.js';
 import {protect, admin} from '../middleware/authMiddleware.js';
 
 const router = express.Router();
@@ -14,4 +16,7 @@ router.get('/myorders/:userId',protect, myOrders);
 router.put('/cancel',protect, updateOrderToCancel);
 router.get('/filter/:filter',protect, filterOrder);
 router.get('/myorders/:userId/filter/:filter',protect, myFilterOrders);
+router.get('/admin/totalSale', protect, getSales);
+router.get('/admin/topProduct', protect, getTopProducts);
+router.get('/admin/topCategory', protect, getProductCategoriesSortedByOrders);
 export default router;

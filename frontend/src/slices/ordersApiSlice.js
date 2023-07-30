@@ -71,6 +71,24 @@ export const ordersApiSlice = apiSlice.injectEndpoints({
                 url: `${ORDER_URL}/myorders/${userId}/filter/${filter}`,
             }),
         }),
+
+        getSalesOrder : builder.query({
+            query: () => ({
+                url: `${ORDER_URL}/admin/totalSale`,
+            }),
+        }),
+
+        getTopProducts : builder.query({
+            query: () => ({
+                url: `${ORDER_URL}/admin/topProduct`,
+            }),
+        }),
+
+        getTopCategory : builder.query({
+            query: () => ({
+                url: `${ORDER_URL}/admin/topCategory`,
+            }),
+        }),
 }),
 })
 
@@ -83,5 +101,8 @@ export const { useCreateOrderMutation,
     useGetMyOrdersQuery,
     useCancelOrderMutation,
     useGetFilterOrdersQuery,
-    useGetMyFilterOrdersQuery
+    useGetMyFilterOrdersQuery,
+    useGetSalesOrderQuery,
+    useGetTopProductsQuery,
+    useGetTopCategoryQuery,
 } = ordersApiSlice;

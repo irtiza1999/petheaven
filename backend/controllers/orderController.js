@@ -240,6 +240,131 @@ const myFilterOrders = asyncHandler(async (req, res) => {
   }
 });
 
+
+const getSales = asyncHandler(async (req, res) => {
+  const orders = await Order.find({
+    createdAt: { $gte: new Date(Date.now() - 6 * 30 * 24 * 60 * 60 * 1000) },
+  });
+  const monthlySales = {
+    January: 0,
+    February: 0,
+    March: 0,
+    April: 0,
+    May: 0,
+    June: 0,
+    July: 0,
+    August: 0,
+    September: 0,
+    October: 0,
+    November: 0,
+    December: 0,
+  };
+
+  orders.forEach(order => {
+    const month = new Date(order.createdAt).toLocaleString('en-US', { month: 'long' });
+    monthlySales[month] += order.totalPrice;
+  });
+
+  const salesData = Object.keys(monthlySales).map(month => ({
+    month,
+    value: parseFloat(monthlySales[month].toFixed(2))
+  }));
+
+  res.json(salesData);
+});
+
+
+const getTopProducts = asyncHandler(async (req, res) => {
+  const orders = await Order.find({
+    createdAt: { $gte: new Date(Date.now() - 30 * 24 * 60 * 60 * 1000) },
+  });
+
+  const productQuantities = {};
+
+  orders.forEach(order => {
+    order.orderItems.forEach(item => {
+      const { product, qty } = item;
+      if (!productQuantities[product]) {
+        productQuantities[product] = 0;
+      }
+      productQuantities[product] += qty;
+    });
+  });
+
+  const top5Products = Object.keys(productQuantities)
+    .map(productId => ({
+      productId,
+      quantitySold: productQuantities[productId],
+    }))
+    .sort((a, b) => b.quantitySold - a.quantitySold)
+    .slice(0, 5);
+
+  const productIds = top5Products.map(product => product.productId);
+  const products = await Product.find({ _id: { $in: productIds } });
+
+  const top5ProductsData = top5Products.map(product => {
+    const { productId, quantitySold } = product;
+    const productDetails = products.find(prod => prod._id.toString() === productId);
+
+    if (productDetails) {
+      return {
+        productId: productDetails._id,
+        productName: productDetails.name,
+        quantitySold,
+      };
+    }
+
+    return {
+      productId: productId,
+      productName: "Product not found",
+      quantitySold,
+    };
+  });
+
+  res.json(top5ProductsData);
+});
+
+const getProductCategoriesSortedByOrders = asyncHandler(async (req, res) => {
+  try {
+    const orders = await Order.find({
+      createdAt: { $gte: new Date(Date.now() - 30 * 24 * 60 * 60 * 1000) },
+    });
+
+    const categoryCounts = {};
+
+    for (const order of orders) {
+      for (const item of order.orderItems) {
+        const product = await Product.findById(item.product);
+
+        if (product && product.itemCategory) {
+          if (!categoryCounts[product.itemCategory]) {
+            categoryCounts[product.itemCategory] = 0;
+          }
+          categoryCounts[product.itemCategory] += item.qty;
+        } else {
+          const unknownCategory = 'Unknown Category';
+          if (!categoryCounts[unknownCategory]) {
+            categoryCounts[unknownCategory] = 0;
+          }
+          categoryCounts[unknownCategory] += item.qty;
+        }
+      }
+    }
+
+    const sortedCategories = Object.keys(categoryCounts)
+      .map(category => ({
+        category,
+        orderCount: categoryCounts[category],
+      }))
+      .sort((a, b) => b.orderCount - a.orderCount);
+
+    res.json(sortedCategories);
+  } catch (error) {
+    console.error('Error fetching data:', error);
+    res.status(500).json({ message: 'Something went wrong.' });
+  }
+});
+
   export {
     addOrderItems,
     getOrderById,
@@ -249,5 +374,8 @@ const myFilterOrders = asyncHandler(async (req, res) => {
     myOrders,
     updateOrderToCancel,
     filterOrder,
-    myFilterOrders
+    myFilterOrders,
+    getSales, 
+    getTopProducts,
+    getProductCategoriesSortedByOrders
   };
