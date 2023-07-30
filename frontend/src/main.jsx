@@ -36,6 +36,7 @@ import AllReviewScreen from './screens/admin/AllReviewScreen.jsx'
 import FilterOrderScreen from './screens/admin/FilterOrderScreen.jsx'
 import AccommodationScreen from './screens/AccommodationScreen.jsx'
 import RoomScreen from './screens/RoomScreen.jsx'
+import MyBookingScreen from './screens/MyBookingScreen.jsx'
 
 
 const router = createBrowserRouter(
@@ -59,6 +60,7 @@ const router = createBrowserRouter(
       <Route path='' element={<PrivateRoute/>}> <Route path='/placeorder' element={<PlaceOrderScreen />} /> </Route>
       <Route path='' element={<PrivateRoute/>}> <Route path='/order/:id' element={<OrderScreen />} /> </Route>
       <Route path='' element={<PrivateRoute/>}> <Route path='/myorder/:userId' element={<MyOrderScreen />} /> </Route>
+      <Route path='' element={<PrivateRoute/>}> <Route path='/myBookings/:id' element={<MyBookingScreen />} /> </Route>
       
       <Route path='item/:item' element={<ItemCategoryScreen />} />
       <Route path='' element={<AdminRoute/>}> <Route path='/admin' element={<AdminPanelScreen />} /> </Route>

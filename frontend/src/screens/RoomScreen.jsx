@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import { Grid, Typography, Paper, Button, Box } from '@mui/material';
 import { useSpring, animated } from 'react-spring';
 import Loader from '../components/Loader';
@@ -15,10 +15,7 @@ import Message from '../components/Message';
 import Input from "@material-ui/core/Input";
 import Calendar from "react-calendar";
 import "react-calendar/dist/Calendar.css";
-import { PayPalButtons, PayPalScriptProvider } from '@paypal/react-paypal-js';
-import {
-  useGetPaypalClientIdQuery,
-} from '../slices/ordersApiSlice';
+
  
 
 const RoomScreen = () => {
@@ -110,16 +107,18 @@ const availableCheck = () => {
     const newTotalPrice = data.price * daysGone;
     setTotalPrice(newTotalPrice);
 
+    const selectedStartDate = new Date(selectedCheckInDate).getTime();
+    const selectedEndDate = new Date(selectedCheckOutDate).getTime();
+
     let overlappingBooking = false;
     for (const booking of data.booking) {
+      const bookingStartDate = new Date(booking.checkInDate).getTime();
+      const bookingEndDate = new Date(booking.checkOutDate).getTime();
 
-      const bookingCheckInDate = new Date(booking.checkInDate);
-      const bookingCheckOutDate = new Date(booking.checkOutDate);
-      console.log(bookingCheckInDate, bookingCheckOutDate);
       if (
-        (selectedCheckInDate >= bookingCheckInDate && selectedCheckInDate < bookingCheckOutDate) ||
-        (selectedCheckOutDate > bookingCheckInDate && selectedCheckOutDate <= bookingCheckOutDate) ||
-        (selectedCheckInDate < bookingCheckInDate && selectedCheckOutDate > bookingCheckOutDate)
+        (selectedStartDate >= bookingStartDate && selectedStartDate < bookingEndDate) ||
+        (selectedEndDate > bookingStartDate && selectedEndDate <= bookingEndDate) ||
+        (selectedStartDate < bookingStartDate && selectedEndDate > bookingEndDate)
       ) {
         overlappingBooking = true;
         break; // Stop checking further bookings, as there's already an overlap
@@ -131,7 +130,7 @@ const availableCheck = () => {
       setAvailable(false);
     } else {
       toast.success('Room is available for these dates. Book now!!');
-      // setAvailable(true);
+      setAvailable(true);
     }
   } else {
     toast.error('Please select check-in and check-out dates');
@@ -139,7 +138,7 @@ const availableCheck = () => {
 };
 
 
-
+  const navigate = useNavigate();
   const [createBooking, { createIsLoading, createError }] = useCreateBookingMutation();
   const handleCheckout = async () => {
     try {
@@ -153,6 +152,7 @@ const availableCheck = () => {
       if(res){
       toast.success('Booking Added Successfully!!');
       refetchProduct();
+      navigate('/myBookings/'+userInfo._id);
       }else{
         toast.error(res.message);
       }

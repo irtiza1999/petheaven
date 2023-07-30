@@ -24,6 +24,11 @@ export const roomApiSlice = apiSlice.injectEndpoints({
             }),
         }),
 
+        getMyBookings: builder.query({
+            query: (id) => ({
+                url: `${ROOM_URL}/myBookings/${id}`,
+            }),
+        }),
     })
     
 })
@@ -32,4 +37,5 @@ export const {
     useGetAllAvailableRoomsQuery,
     useGetRoomByIdQuery,
     useCreateBookingMutation,
+    useGetMyBookingsQuery,
  } = roomApiSlice;

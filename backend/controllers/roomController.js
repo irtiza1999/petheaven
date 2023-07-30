@@ -98,19 +98,21 @@ const createBooking = asyncHandler(async (req, res) => {
 });
 
 
+const getMyBookings = asyncHandler(async (req, res) => {
+  const bookings = await Room.find({ 'booking.user': req.params.id });
+  if (bookings) {
+    res.json(bookings);
+  } else {
+    res.status(404);
+    throw new Error('No bookings found');
+  }
+});
 
-
-
-
-// const roomAvailabilityById = asyncHandler(async (req, res) => {
-//     const room = await Room.findById(req.params.id);
-    
-// });
 
   export {
     createRoom,
     getAllRooms,
     getRoomById,
     createBooking,
-
+    getMyBookings
   };
