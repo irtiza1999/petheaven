@@ -17,14 +17,13 @@ import { Row, Col } from 'react-bootstrap';
 import { Grid } from '@mui/material';
 import Rating from '@mui/material/Rating';
 
-
 const AnimatedCard = animated(Card);
 
-const RoomCard = ({ product }) => {
-//    const imageBaseUrl = 'http://localhost:5000/uploads/';
+const PetCard = ({ pet }) => {
+   const imageBaseUrl = 'http://localhost:5000/uploads/';
     useEffect(() => {
-    product},
-    [product]);
+    pet},
+    [pet]);
 
   const { userInfo } = useSelector(state => state.auth);
   const animationProps = useSpring({
@@ -39,10 +38,6 @@ const RoomCard = ({ product }) => {
     boxShadow: '0px 5px 10px rgba(0, 0, 0, 0.10)',
     from: { transform: 'scale(0.9)', boxShadow: 'ash' },
   });
-
-  const handleRoomBooking = (id) => {
-  }
-
 
 
   const [isHovered, setHovered] = useState(false);
@@ -59,15 +54,15 @@ const RoomCard = ({ product }) => {
       onMouseLeave={() => setHovered(false)}
       >
         <Card>
-          <LinkContainer to={`/services/accommodation/${product._id}`}>
+          <LinkContainer to={`/pet/${pet._id}`}>
             <CardActionArea>
               <div>
               <CardMedia
                 component="img"
                 image={
                     // imageBaseUrl+
-                    product.image}
-                alt={product.name}
+                    pet.image}
+                alt={pet.name}
                 style={{width:'100%',height: '15vw',
                 objectFit: 'cover'}}
                 position="top"
@@ -75,35 +70,21 @@ const RoomCard = ({ product }) => {
               </div>
               <CardContent>
                 <Typography gutterBottom variant="h6" component="div">
-                    {product.name}
+                    {pet.name}
                 </Typography>
                 <Typography variant="body2" color="text.secondary">
                     <span style={{ color: 'green', fontWeight: 'bold' }}>Available Now</span>
                 </Typography>
-
-                {/* <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', height: '100%' }}>
-                  <Typography variant="body2" color="text.secondary">
-                    <Rating name="half-rating" defaultValue={product.rating} precision={0.5} readOnly />
-                  </Typography>
-                </div> */}
-                
-                <Typography variant="body2" color="text.secondary">
-                  <b>${product.price}/night</b>
-                </Typography>
+                 <Button style={{marginTop:'10px'}}size="small" color="success">
+                    View Details
+                </Button>
               </CardContent>
             </CardActionArea>
           </LinkContainer>
-          <LinkContainer to={`/services/accommodation/${product._id}`}>
-          <CardActions style={{ justifyContent: 'center' }}>
-                <Button size="small" color="success" onClick={handleRoomBooking(product._id)}>
-                    View Details
-                </Button>
-            </CardActions>
-            </LinkContainer>
         </Card>
       </AnimatedCard>
     </div>
   );
 };
 
-export default RoomCard;
+export default PetCard;

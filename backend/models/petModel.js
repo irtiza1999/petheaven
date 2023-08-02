@@ -34,8 +34,12 @@ const petSchema = mongoose.Schema(
       default: false
     },
     adoptionFee: Number,
-    images: String,
+    image: String,
     location: String,
+    isVerified: {
+      type: Boolean,
+      default: false
+    },
     contactInfo: {
       type: String,
       required: true

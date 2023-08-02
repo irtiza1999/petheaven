@@ -40,6 +40,9 @@ import MyBookingScreen from './screens/MyBookingScreen.jsx'
 import SalesScreen from './screens/admin/SalesScreen.jsx'
 import FilterAccommodationScreen from './screens/FilterAccommodationScreen.jsx'
 import AdminBookingScreen from './screens/admin/AdminBookingScreen.jsx'
+import RescueScreen from './screens/RescueScreen.jsx'
+import AddPetScreen from './screens/AddPetScreen.jsx'
+import PetScreen from './screens/PetScreen.jsx'
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -48,10 +51,13 @@ const router = createBrowserRouter(
       <Route path='/login' element={<LoginScreen />} />
       <Route path='/register' element={<RegisterScreen />} />
       <Route path='/cart' element={<CartScreen />} />
+      <Route path='/services/rescue' element={<RescueScreen />} />
       <Route path='/product/:id' element={<ProductScreen />} />
       <Route path='/:category' element={<CategoryScreen />} />
       <Route path='/search/:keyWord' element={<SearchScreen />} />
       <Route path='/filter/:filter' element={<FilterScreen />} />
+      <Route path='/pet/:id' element={<PetScreen />} />
+      <Route path='' element={<PrivateRoute/>}> <Route path='/services/rescue/add' element={<AddPetScreen />} /> </Route>
       <Route path='' element={<PrivateRoute/>}> <Route path='/services/accommodation' element={<AccommodationScreen />} /> </Route>
       <Route path='' element={<PrivateRoute/>}> <Route path='/services/accommodation/:id' element={<RoomScreen />} /> </Route>
       <Route path='' element={<PrivateRoute/>}> <Route path='/myorder/:userId/filter/:filter' element={<MyFilterOrderScreen />} /> </Route>

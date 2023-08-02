@@ -1,12 +1,10 @@
 import express from 'express';
-import { petInfo, createPet, allPetInfo, removePet, updatePet } from '../controllers/petController.js';
+import {  createPet, getAllPet, getPetById } from '../controllers/petController.js';
 
 const router = express.Router();
  
-router.get('/', allPetInfo);
-router.delete('/', removePet);
-router.get('/:name', petInfo);
-router.put('/', updatePet);
-router.post('/', createPet);
 
+router.post('/', createPet);
+router.get('/', getAllPet);
+router.get('/:id', getPetById);
 export default router;
