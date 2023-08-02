@@ -176,6 +176,34 @@ const markAsPaid = asyncHandler(async (req, res) => {
 });
 
 
+const updateRoom = asyncHandler(async (req, res) => {
+    const roomId = req.body.productId;
+    const room = await Room.findById(roomId);
+
+    if(room){
+        const imageName = (req.file) ? req.file.filename : null;
+        room.name = req.body.name || room.name;
+        room.petCategory = req.body.petCategory || room.petCategory;
+        room.roomNumber = req.body.roomNumber || room.roomNumber;
+        room.price = req.body.price || room.price;
+        room.image = imageName || room.image;
+        
+        const updatedRoom = await room.save();
+        res.status(200).json({
+            _id : updatedRoom._id,
+            name : updatedRoom.name,
+            petCategory : updatedRoom.petCategory,
+            price : updatedRoom.price,
+            image : updatedRoom.image,
+        });
+    }else{
+        res.status(404);
+        throw new Error('Product not found');
+    }
+});
+
+
+
   export {
     createRoom,
     getAllRooms,
@@ -185,4 +213,5 @@ const markAsPaid = asyncHandler(async (req, res) => {
     getAllRoomsByDate,
     getAllBookings,    
     markAsPaid,
+    updateRoom
   };

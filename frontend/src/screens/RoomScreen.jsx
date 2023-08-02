@@ -19,7 +19,7 @@ import "react-calendar/dist/Calendar.css";
  
 
 const RoomScreen = () => {
-//    const imageBaseUrl = 'http://localhost:5000/uploads/';
+   const imageBaseUrl = 'http://localhost:5000/uploads/';
 const [showCheckInCalendar, setShowCheckInCalendar] = useState(false);
   const [showCheckOutCalendar, setShowCheckOutCalendar] = useState(false);
   const [selectedCheckInDate, setSelectedCheckInDate] = useState(new Date());
@@ -176,7 +176,7 @@ const availableCheck = () => {
             <Grid item xs={12} sm={3}>
               <img
                 src={
-                    // imageBaseUrl+
+                    imageBaseUrl+
                     data.image}
                 alt="Product"
                 style={{ width: '100%', height: 'auto', maxWidth: '300px', maxHeight: '300px', objectFit: 'cover' }}

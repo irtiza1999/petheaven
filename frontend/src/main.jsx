@@ -44,6 +44,7 @@ import RescueScreen from './screens/RescueScreen.jsx'
 import AddPetScreen from './screens/AddPetScreen.jsx'
 import PetScreen from './screens/PetScreen.jsx'
 import AdminManagePetScreen from './screens/admin/AdminManagePetScreen.jsx'
+import AdminManageRoomScreen from './screens/admin/AdminManageRoomScreen.jsx'
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -83,6 +84,8 @@ const router = createBrowserRouter(
        <Route path='' element={<AdminRoute/>}> <Route path='/admin/bookings' element={<AdminBookingScreen />} /> </Route>
        <Route path='' element={<AdminRoute/>}> <Route path='/admin/sales' element={<SalesScreen />} /> </Route>
         <Route path='' element={<AdminRoute/>}> <Route path='/admin/pets' element={<AdminManagePetScreen />} /> </Route>
+        <Route path='' element={<AdminRoute/>}> <Route path='/admin/rooms' element={<AdminManageRoomScreen />} /> </Route>
+
       <Route path='*' element={<NotFoundScreen />} />
     </Route>
   ))

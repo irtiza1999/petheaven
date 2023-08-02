@@ -21,7 +21,7 @@ import Rating from '@mui/material/Rating';
 const AnimatedCard = animated(Card);
 
 const RoomCard = ({ product }) => {
-//    const imageBaseUrl = 'http://localhost:5000/uploads/';
+   const imageBaseUrl = 'http://localhost:5000/uploads/';
     useEffect(() => {
     product},
     [product]);
@@ -65,7 +65,7 @@ const RoomCard = ({ product }) => {
               <CardMedia
                 component="img"
                 image={
-                    // imageBaseUrl+
+                    imageBaseUrl+
                     product.image}
                 alt={product.name}
                 style={{width:'100%',height: '15vw',

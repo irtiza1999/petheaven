@@ -49,6 +49,14 @@ export const roomApiSlice = apiSlice.injectEndpoints({
                 body,
             }),
         }),
+
+        updateRoom: builder.mutation({
+            query: (body) => ({
+                url: `${ROOM_URL}/admin/updateRoom`,
+                method: 'PUT',
+                body,
+            }),
+        }),
     })
     
 })
@@ -60,5 +68,6 @@ export const {
     useGetMyBookingsQuery,
     useGetRoomByDateQuery,
     useGetAllBookingsQuery,
-    useMarkAsPaidMutation
+    useMarkAsPaidMutation,
+    useUpdateRoomMutation
  } = roomApiSlice;

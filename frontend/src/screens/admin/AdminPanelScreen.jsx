@@ -18,6 +18,7 @@ import HomeIcon from '@mui/icons-material/Home';
 import MonetizationOnIcon from '@mui/icons-material/MonetizationOn';
 import HotelIcon from '@mui/icons-material/Hotel';
 import PetsIcon from '@mui/icons-material/Pets';
+import MeetingRoomIcon from '@mui/icons-material/MeetingRoom';
 
 const drawerWidth = 240;
 
@@ -129,6 +130,16 @@ export default function ClippedDrawer() {
                         <PetsIcon />
                     </ListItemIcon>
                         <ListItemText primary={'Manage Pets'} />
+                    </ListItemButton>
+                </ListItem>
+            </LinkContainer>
+            <LinkContainer to='/admin/rooms'>
+                <ListItem disablePadding>
+                    <ListItemButton>
+                    <ListItemIcon>
+                        <MeetingRoomIcon />
+                    </ListItemIcon>
+                        <ListItemText primary={'Manage Rooms'} />
                     </ListItemButton>
                 </ListItem>
             </LinkContainer>
