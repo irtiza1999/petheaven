@@ -19,7 +19,7 @@ import "react-calendar/dist/Calendar.css";
  
 
 const RoomScreen = () => {
-//    const imageBaseUrl = 'http://localhost:5000/uploads/';
+   const imageBaseUrl = 'http://localhost:5000/uploads/';
   const { id } = useParams();
   const {userInfo} = useSelector(state => state.auth);
   const { data, isLoading, refetch: refetchProduct, error } = useGetPetByIdQuery(id);
@@ -47,7 +47,7 @@ const RoomScreen = () => {
             <Grid item xs={12} sm={3}>
               <img
                 src={
-                    // imageBaseUrl+
+                    imageBaseUrl+
                     data.image}
                 alt="Product"
                 style={{ width: '100%', height: 'auto', maxWidth: '300px', maxHeight: '300px', objectFit: 'cover' }}

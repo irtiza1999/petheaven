@@ -21,7 +21,7 @@ const AddPet = () => {
     const [age, setAge] = useState('');
     const [color, setColor] = useState('');
     const [size, setSize] = useState('');
-    const [weight, setWeight] = useState(0);
+    const [weight, setWeight] = useState('');
     const [description, setDescription] = useState('');
     const [temperament, setTemperament] = useState('');
     const [image, setImage] = useState(null);
@@ -35,52 +35,37 @@ const AddPet = () => {
     const navigate = useNavigate();
     
     const [createPet, { isLoading: isLoadingCreate, error: errorCreate }] = useCreatePetMutation();
-function readFileAsDataURL(file) {
-  return new Promise((resolve, reject) => {
-    const reader = new FileReader();
-    reader.onloadend = () => {
-      resolve(reader.result);
-    };
-    reader.onerror = reject;
-    reader.readAsDataURL(file);
-  });
-}
-const submitHandler = async (e) => {
-  e.preventDefault();
-  setPostedById(userId);
-  let imageBase64 = null;
-    if (image) {
-      imageBase64 = await readFileAsDataURL(image);
-    }
-  try {
-    const petData = {
-      name: name,
-      species: species,
-      breed: breed,
-      age: age,
-      gender: gender,
-      color: color,
-      size: size,
-      weight: weight,
-      description: description,
-      temperament: temperament,
-      image: imageBase64,
-      location: location,
-      contactInfo: contactInfo,
-      postedBy: postedBy
-    };
 
-    const res = await createPet(petData).unwrap();
-    if (res) {
-      navigate("/services/rescue");
-      toast.success("Pet added successfully. Wait for verification");
-    }
-  } catch (err) {
-    toast.error(err?.data?.message || err?.error);
-    console.log(err);
-  }
-};
 
+ const submitHandler = async (e) => {
+        e.preventDefault();
+        setPostedById(userId);
+        try{
+            const formData = new FormData();
+            formData.append('name', name);
+            formData.append('species', species);
+            formData.append('breed', breed);
+            formData.append('age', age);
+            formData.append('gender', gender);
+            formData.append('color', color);
+            formData.append('size', size);
+            formData.append('weight', weight);
+            formData.append('description', description);
+            formData.append('temperament', temperament);
+            formData.append('image', image);
+            formData.append('location', location);
+            formData.append('contactInfo', contactInfo);
+            formData.append('postedBy', postedBy);
+            const res = await createPet(formData).unwrap();
+            if(res){
+                navigate("/services/rescue");
+                toast.success('Pet added successfully. Wait for verification');
+            }
+        }catch(err){
+            toast.error(err?.data?.message || err?.error);
+            console.log(err);
+        }
+    };
 
     return (
         <Grid container spacing={6}>

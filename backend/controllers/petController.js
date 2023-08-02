@@ -12,10 +12,12 @@ const createPet = asyncHandler(async (req, res) => {
         throw new Error('Pet already exists');
     }
     else{
-        // const imageName = (req.file) ? req.file.filename : null;
+        const imageName = (req.file) ? req.file.filename : null;
         const newPet = await Pet.create({
             name, species, breed, age, gender, color, size,
-            weight, description, temperament, image, location, contactInfo,
+            weight, description, temperament, 
+            image: imageName,
+            location, contactInfo,
             postedBy
         });
         if(newPet){
@@ -64,6 +66,10 @@ const markAsVerified = asyncHandler(async (req, res) => {
 const markAsAdopted = asyncHandler(async (req, res) => {
     const pet = await Pet.findById(req.params.id);
     if(pet){
+        if(!pet.isVerified) {
+            res.status(400);
+            throw new Error('Pet not verified');
+        }
         pet.isAdopted = true;
         const updatedPet = await pet.save();
         res.json(updatedPet);

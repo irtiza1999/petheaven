@@ -148,9 +148,15 @@ const getAllRoomsByDate = asyncHandler(async (req, res) => {
 });
 
 const getAllBookings = asyncHandler(async (req, res) => {
-  const bookings = await Room.find({ 'booking.isBooked': true });
+  const bookings = await Room.find({ });
   if (bookings) {
-    res.json(bookings);
+    let bookList = [];
+    bookings.forEach((booking) => {
+      booking.booking.forEach((book) => {
+        bookList.push(book);
+      });
+    });
+    res.json(bookList);
   } else {
     res.status(404);
     throw new Error('No bookings found');

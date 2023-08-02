@@ -20,6 +20,7 @@ const MyBookingScreen = () => {
   const { userInfo } = useSelector(state => state.auth);
   const userId = userInfo?._id;
   const { data: orders, refetch, isLoading, isError, error } = useGetMyBookingsQuery(userId);
+  console.log(orders);
 
   return (
     <Grid container spacing={2} style={{paddingTop:'100px'}}>

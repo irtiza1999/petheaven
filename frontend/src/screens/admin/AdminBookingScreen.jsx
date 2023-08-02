@@ -47,7 +47,7 @@ const AllBookingScreen = () => {
             <Table>
               <TableHead>
                 <TableRow>
-                  <TableCell>ID</TableCell>
+                  <TableCell>Room Name</TableCell>
                   <TableCell>Total Price</TableCell>
                   <TableCell>Payment Status</TableCell>
                   <TableCell>Actions</TableCell>
@@ -55,7 +55,7 @@ const AllBookingScreen = () => {
               </TableHead>
               <TableBody>
                 {orders &&
-                  orders[0].booking.map((order) => (
+                  orders.map((order) => (
                     <TableRow key={order._id}>
                       <TableCell>
                         <b>{order._id}</b>

@@ -60,7 +60,7 @@ const PetCard = ({ pet }) => {
               <CardMedia
                 component="img"
                 image={
-                    // imageBaseUrl+
+                    imageBaseUrl+
                     pet.image}
                 alt={pet.name}
                 style={{width:'100%',height: '15vw',
