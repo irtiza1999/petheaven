@@ -204,15 +204,20 @@ const updateRoom = asyncHandler(async (req, res) => {
 });
 
 const deleteRoom = asyncHandler(async (req, res) => {
-    const room = await Room.findById(req.params.id);
-    if(room){
-        await room.remove();
-        res.json({message: 'Room removed'});
-    }else{
-        res.status(404);
-        throw new Error('Room not found');
+  try {
+    const room = await Room.findByIdAndDelete(req.params.id);
+    
+    if (room) {
+      res.json({ message: 'Room removed' });
+    } else {
+      res.status(404).json({ error: 'Room not found' });
     }
+  } catch (error) {
+    // Handle any errors that occur during the database operation
+    res.status(500).json({ error: 'Internal server error' });
+  }
 });
+
 
 
 

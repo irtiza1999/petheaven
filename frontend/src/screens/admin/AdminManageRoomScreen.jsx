@@ -77,8 +77,8 @@ const AdminRoomScreen = () => {
     const handleRemoveProduct = (e) => {
         e.preventDefault();
         try{
-            const res = deleteProduct({productId});
-            toast.success('Product deleted successfully');
+            const res = deleteProduct(productId);
+            toast.success('Room deleted successfully');
             handleClose();
             refetch();
         }catch(error){
@@ -201,7 +201,7 @@ const AdminRoomScreen = () => {
         </Modal.Body>
         <Modal.Footer>
         <Button variant="danger" 
-        // onClick={handleRemoveProduct}
+        onClick={handleRemoveProduct}
         >Remove Product</Button>
           <Button variant="secondary" onClick={handleClose}>
             Close
