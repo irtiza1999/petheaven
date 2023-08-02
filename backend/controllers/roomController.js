@@ -101,7 +101,15 @@ const createBooking = asyncHandler(async (req, res) => {
 const getMyBookings = asyncHandler(async (req, res) => {
   const bookings = await Room.find({ 'booking.user': req.params.id });
   if (bookings) {
-    res.json(bookings);
+    let bookList = [];
+    bookings.forEach((booking) => {
+      booking.booking.forEach((book) => {
+        if (book.user.toString() === req.params.id) {
+          bookList.push(book);
+        }
+      });
+    });
+    res.json(bookList);
   } else {
     res.status(404);
     throw new Error('No bookings found');

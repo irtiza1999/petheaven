@@ -44,7 +44,7 @@ const MyBookingScreen = () => {
                 </TableRow>
               </TableHead>
               <TableBody>
-                {orders && orders[0].booking.map((order) => (
+                {orders && orders.map((order) => (
                     <>
                   <TableRow key={order._id}>
                     <TableCell><b>{order._id}</b></TableCell>
