@@ -57,6 +57,22 @@ export const roomApiSlice = apiSlice.injectEndpoints({
                 body,
             }),
         }),
+
+        deleteRoom: builder.mutation({
+            query: (id) => ({
+                url: `${ROOM_URL}/admin/deleteRoom/${id}`,
+                method: 'DELETE',
+            }),
+        }),
+
+        createRoom: builder.mutation({
+            query: (body) => ({
+                url: `${ROOM_URL}`,
+                method: 'POST',
+                body,
+            }),
+        }),
+
     })
     
 })
@@ -69,5 +85,7 @@ export const {
     useGetRoomByDateQuery,
     useGetAllBookingsQuery,
     useMarkAsPaidMutation,
-    useUpdateRoomMutation
+    useUpdateRoomMutation,
+    useDeleteRoomMutation,
+    useCreateRoomMutation,
  } = roomApiSlice;

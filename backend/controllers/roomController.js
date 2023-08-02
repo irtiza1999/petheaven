@@ -14,13 +14,14 @@ const createRoom = asyncHandler(async (req, res) => {
             res.status(400);
             throw new Error('Room number already exists');
         }else{
+          const imageName = (req.file) ? req.file.filename : null;
             const room = new Room({
                 name,
                 roomNumber,
                 type,
                 petCategory,
                 price,
-                image,
+                image: imageName,
             });
             const createdRoom = await room.save();
             res.status(201).json(createdRoom);
@@ -202,6 +203,17 @@ const updateRoom = asyncHandler(async (req, res) => {
     }
 });
 
+const deleteRoom = asyncHandler(async (req, res) => {
+    const room = await Room.findById(req.params.id);
+    if(room){
+        await room.remove();
+        res.json({message: 'Room removed'});
+    }else{
+        res.status(404);
+        throw new Error('Room not found');
+    }
+});
+
 
 
   export {
@@ -213,5 +225,6 @@ const updateRoom = asyncHandler(async (req, res) => {
     getAllRoomsByDate,
     getAllBookings,    
     markAsPaid,
-    updateRoom
+    updateRoom,
+    deleteRoom
   };

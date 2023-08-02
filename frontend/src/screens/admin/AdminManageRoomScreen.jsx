@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Typography, Table, TableHead, TableBody, TableRow, TableCell, Paper } from '@material-ui/core';
-import { useGetAllAvailableRoomsQuery, useUpdateRoomMutation} from '../../slices/roomApiSlice.js';
+import { useGetAllAvailableRoomsQuery, useUpdateRoomMutation, 
+useDeleteRoomMutation} from '../../slices/roomApiSlice.js';
 import Loader from '../../components/Loader.jsx';
 import Message from '../../components/Message.jsx';
 import { LinkContainer } from 'react-router-bootstrap';
@@ -72,21 +73,21 @@ const AdminRoomScreen = () => {
 
 
 
-  //   const [deleteProduct, { isLoading: isLoadingDelete, error: errorDelete }] = useDeleteProductMutation();
-  //   const handleRemoveProduct = (e) => {
-  //       e.preventDefault();
-  //       try{
-  //           const res = deleteProduct({productId});
-  //           toast.success('Product deleted successfully');
-  //           handleClose();
-  //           refetch();
-  //       }catch(error){
-  //           toast.error(error.message);
-  //       }
-  //   }
-  // useEffect(() => {
-  //   refetch();
-  // }, []);
+    const [deleteProduct, { isLoading: isLoadingDelete, error: errorDelete }] = useDeleteRoomMutation();
+    const handleRemoveProduct = (e) => {
+        e.preventDefault();
+        try{
+            const res = deleteProduct({productId});
+            toast.success('Product deleted successfully');
+            handleClose();
+            refetch();
+        }catch(error){
+            toast.error(error.message);
+        }
+    }
+  useEffect(() => {
+    refetch();
+  }, []);
   
 
   return (
@@ -100,7 +101,7 @@ const AdminRoomScreen = () => {
                 <Typography variant="h3">All Products</Typography>
             </Grid>
             <Grid item>
-                <LinkContainer container to="/admin/addproduct">
+                <LinkContainer container to="/admin/addroom">
                 <Button variant="success" className="btn-sm">
                 <AddCircleIcon />
                 </Button>
