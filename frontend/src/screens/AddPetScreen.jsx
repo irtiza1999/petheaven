@@ -11,6 +11,7 @@ import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
+import { useSelector } from "react-redux";
 
 const AddPet = () => {
     const [name, setName] = useState('');
@@ -26,6 +27,10 @@ const AddPet = () => {
     const [image, setImage] = useState(null);
     const [location, setLocation] = useState('');
     const [contactInfo, setContactInfo] = useState('');
+    const [postedBy, setPostedById] = useState('');
+
+      const { userInfo } = useSelector(state => state.auth);
+      const userId = userInfo?._id;
 
     const navigate = useNavigate();
     
@@ -42,6 +47,7 @@ function readFileAsDataURL(file) {
 }
 const submitHandler = async (e) => {
   e.preventDefault();
+  setPostedById(userId);
   let imageBase64 = null;
     if (image) {
       imageBase64 = await readFileAsDataURL(image);
@@ -61,6 +67,7 @@ const submitHandler = async (e) => {
       image: imageBase64,
       location: location,
       contactInfo: contactInfo,
+      postedBy: postedBy
     };
 
     const res = await createPet(petData).unwrap();

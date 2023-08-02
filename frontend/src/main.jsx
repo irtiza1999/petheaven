@@ -43,6 +43,7 @@ import AdminBookingScreen from './screens/admin/AdminBookingScreen.jsx'
 import RescueScreen from './screens/RescueScreen.jsx'
 import AddPetScreen from './screens/AddPetScreen.jsx'
 import PetScreen from './screens/PetScreen.jsx'
+import AdminManagePetScreen from './screens/admin/AdminManagePetScreen.jsx'
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -57,7 +58,7 @@ const router = createBrowserRouter(
       <Route path='/search/:keyWord' element={<SearchScreen />} />
       <Route path='/filter/:filter' element={<FilterScreen />} />
       <Route path='/pet/:id' element={<PetScreen />} />
-      <Route path='' element={<PrivateRoute/>}> <Route path='/services/rescue/add' element={<AddPetScreen />} /> </Route>
+      <Route path='' element={<PrivateRoute/>}> <Route path='/pet/rescue/add' element={<AddPetScreen />} /> </Route>
       <Route path='' element={<PrivateRoute/>}> <Route path='/services/accommodation' element={<AccommodationScreen />} /> </Route>
       <Route path='' element={<PrivateRoute/>}> <Route path='/services/accommodation/:id' element={<RoomScreen />} /> </Route>
       <Route path='' element={<PrivateRoute/>}> <Route path='/myorder/:userId/filter/:filter' element={<MyFilterOrderScreen />} /> </Route>
@@ -81,6 +82,7 @@ const router = createBrowserRouter(
       <Route path='' element={<AdminRoute/>}> <Route path='/admin/orders/filter/:filter' element={<FilterOrderScreen />} /> </Route>
        <Route path='' element={<AdminRoute/>}> <Route path='/admin/bookings' element={<AdminBookingScreen />} /> </Route>
        <Route path='' element={<AdminRoute/>}> <Route path='/admin/sales' element={<SalesScreen />} /> </Route>
+        <Route path='' element={<AdminRoute/>}> <Route path='/admin/pets' element={<AdminManagePetScreen />} /> </Route>
       <Route path='*' element={<NotFoundScreen />} />
     </Route>
   ))

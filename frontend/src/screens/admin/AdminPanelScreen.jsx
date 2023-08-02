@@ -1,5 +1,6 @@
 import Box from '@mui/material/Box';
 import Drawer from '@mui/material/Drawer';
+import Grid from '@mui/material/Grid';
 import CssBaseline from '@mui/material/CssBaseline';
 import List from '@mui/material/List';
 import Divider from '@mui/material/Divider';
@@ -16,17 +17,21 @@ import ReviewsIcon from '@mui/icons-material/Reviews';
 import HomeIcon from '@mui/icons-material/Home';
 import MonetizationOnIcon from '@mui/icons-material/MonetizationOn';
 import HotelIcon from '@mui/icons-material/Hotel';
+import PetsIcon from '@mui/icons-material/Pets';
 
 const drawerWidth = 240;
 
 export default function ClippedDrawer() {
   return (
+    <Grid container spacing={2} style={{marginTop:'40px'}}>
+    <Grid item xs={12} sm={12} md={12} lg={12} xl={12}>
+      <Grid item>
     <Box sx={{ display: 'flex' }}>
       <CssBaseline />
       <Drawer
         variant="permanent"
         sx={{
-          width: drawerWidth,
+          // width: drawerWidth,
           flexShrink: 0,
           [`& .MuiDrawer-paper`]: { width: drawerWidth, boxSizing: 'border-box' },
         }}
@@ -117,9 +122,22 @@ export default function ClippedDrawer() {
                     </ListItemButton>
                 </ListItem>
             </LinkContainer>
+            <LinkContainer to='/admin/pets'>
+                <ListItem disablePadding>
+                    <ListItemButton>
+                    <ListItemIcon>
+                        <PetsIcon />
+                    </ListItemIcon>
+                        <ListItemText primary={'Manage Pets'} />
+                    </ListItemButton>
+                </ListItem>
+            </LinkContainer>
           </List>
         </Box>
       </Drawer>
     </Box>
+    </Grid>        
+    </Grid>
+    </Grid>
   );
 }

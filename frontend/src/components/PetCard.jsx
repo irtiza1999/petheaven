@@ -73,7 +73,7 @@ const PetCard = ({ pet }) => {
                     {pet.name}
                 </Typography>
                 <Typography variant="body2" color="text.secondary">
-                    <span style={{ color: 'green', fontWeight: 'bold' }}>Available Now</span>
+                    <span style={{ color: 'green', fontWeight: 'bold' }}>Verified</span>
                 </Typography>
                  <Button style={{marginTop:'10px'}}size="small" color="success">
                     View Details

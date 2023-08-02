@@ -24,12 +24,34 @@ endpoints: (builder) => ({
                 method: 'GET',
             }),
         }),
-    })
+    getAllPets: builder.query({
+            query: () => ({
+                url: `${PET_URL}/admin/all`,
+                method: 'GET',
+            }),
+        }),
+
+    markAsVerified: builder.mutation({
+            query: (id) => ({
+                url: `${PET_URL}/admin/verify/${id}`,
+                method: 'PUT',
+            }),
+        }),
+    
+    markAsAdopted: builder.mutation({
+            query: (id) => ({
+                url: `${PET_URL}/admin/adopt/${id}`,
+                method: 'PUT',
+            }),
+        }),
+        })
 });
 export const { 
     useCreatePetMutation,
     useGetAllPetQuery,
     useGetPetByIdQuery,
-    
+    useGetAllPetsQuery,
+    useMarkAsVerifiedMutation,
+    useMarkAsAdoptedMutation,
  } = petApiSlice;
 export default petApiSlice ;

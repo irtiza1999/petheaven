@@ -1,4 +1,4 @@
-import React from 'react'
+import {useEffect} from 'react'
 import { useNavigate } from "react-router-dom";
 import Button from "@material-ui/core/Button";
 import Grid from "@material-ui/core/Grid";
@@ -12,7 +12,12 @@ import PetCard from '../components/PetCard';
 
 
 const RescueScreen = () => {
-    const {data, isLoading, error} = useGetAllPetQuery();
+    const {data, refetch, isLoading, error} = useGetAllPetQuery();
+    // if(data){
+    //   useEffect(() => {
+    //     refetch();
+    // }, [data]);
+    // }
   return (
     <>
      <div
