@@ -10,10 +10,17 @@ import orderRoute from './routes/orderRoute.js';
 import reviewRoute from './routes/reviewRoute.js';
 import petRoute from './routes/petRoute.js';
 import roomRoute from './routes/roomRoute.js';
+import cors from 'cors';
 
 const port = process.env.PORT || 5000;
 
 const app = express();
+const corsOptions = {
+  origin: 'https://thlab.techavens.com', // or '*' to allow all origins
+  optionsSuccessStatus: 200 // some legacy browsers (IE11, various SmartTVs) choke on 204
+};
+
+app.use(cors(corsOptions)); // Use cors middleware with options
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
